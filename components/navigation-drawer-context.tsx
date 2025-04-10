@@ -1,38 +1,77 @@
-"use client"
+"use client";
 
-import {createContext, useContext, useEffect, useState} from "react"
-import { NavigationDrawer } from "@/components/navigation-drawer"
-import { sessions } from "@/lib/data"
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    ReactNode,
+} from "react";
+import { getAllSessions } from "@/lib/api";
+import {NavigationDrawer, Session} from "@/components/navigation-drawer";
 
-interface DrawerContextType {
+const NavigationDrawerContext = createContext<NavigationDrawerContextType | undefined>(undefined);
 
-    openDrawer: () => void
-    closeDrawer: () => void
-}
+export const NavigationDrawerProvider = ({ children }: { children: ReactNode }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [sessions, setSessions] = useState<Session[]>([])
 
-const NavigationDrawerContext = createContext<DrawerContextType | null>(null)
+    const openDrawer = () => setIsOpen(true);
+    const closeDrawer = () => setIsOpen(false);
 
-export function useNavigationDrawer() {
-    const context = useContext(NavigationDrawerContext)
-    if (!context) throw new Error("Missing NavigationDrawerContext")
-    return context
-}
+    const reloadSessions = async () => {
+        const result = await getAllSessions()
+        const transformed = result.map((s: any) => ({
+            id: String(s.id),
+            title: s.title,
+            date: new Date(s.startTime).toLocaleString("ru-RU", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            })
+        }))
 
-export function NavigationDrawerProvider({ children }: { children: React.ReactNode }) {
-    const [isOpen, setIsOpen] = useState(false)
+        setSessions(transformed)
+    }
 
     useEffect(() => {
-        console.log("Drawer open?", isOpen)
-    }, [isOpen])
+        const loadSessions = async () => {
+            const result = await getAllSessions()
 
+            const transformed = result.map((s: any) => ({
+                id: String(s.id),
+                title: s.title,
+                date: new Date(s.startTime).toLocaleString("ru-RU", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })
+            }))
 
-    const openDrawer = () => setIsOpen(true)
-    const closeDrawer = () => setIsOpen(false)
+            setSessions(transformed)
+        }
+
+        loadSessions()
+    }, [])
+
 
     return (
-        <NavigationDrawerContext.Provider value={{ openDrawer, closeDrawer }}>
-            {children}
+        <NavigationDrawerContext.Provider value={{ isOpen, openDrawer, closeDrawer, sessions, reloadSessions }}>
             <NavigationDrawer open={isOpen} onClose={closeDrawer} sessions={sessions} />
+            <main>{children}</main>
         </NavigationDrawerContext.Provider>
     )
-}
+
+};
+
+export const useNavigationDrawer = () => {
+    const context = useContext(NavigationDrawerContext);
+    if (!context) {
+        throw new Error("useNavigationDrawer must be used within a NavigationDrawerProvider");
+    }
+    return context;
+};

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
-interface Session {
+export interface Session {
   id: string
   title: string
   date: string
@@ -41,9 +41,12 @@ export function NavigationDrawer({ sessions, open, onClose }: NavigationDrawerPr
             )}
             onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="md-headline-small mb-6 px-2">Recent Sessions</h2>
-          <nav className="flex flex-col space-y-1">
-            {sessions.map((session) => (
+            <h2 className="md-headline-small font-medium mb-4 px-2 tracking-tight">
+                История запросов
+            </h2>
+
+            <nav className="flex flex-col space-y-1">
+                {sessions.map((session) => (
                 <Link
                     key={session.id}
                     href={`/session/${session.id}`}
@@ -55,10 +58,13 @@ export function NavigationDrawer({ sessions, open, onClose }: NavigationDrawerPr
                             : "hover:bg-surface-container-high active:bg-surface-container-highest",
                     )}
                 >
-                  <span className="md-title-medium">{session.title}</span>
-                  <span className="md-body-small text-muted-foreground">{session.date}</span>
+                  <span className="truncate block max-w-[200px]">
+                      {session.title.length > 50 ? `${session.title.slice(0, 50)}…` : session.title}
+                    </span>
+
+                    <span className="md-body-small text-muted-foreground">{session.date}</span>
                 </Link>
-            ))}
+                ))}
           </nav>
         </div>
       </div>

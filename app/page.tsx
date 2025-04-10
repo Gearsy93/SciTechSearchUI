@@ -3,17 +3,26 @@
 import { useState, type KeyboardEvent } from "react"
 import { useRouter } from "next/navigation"
 
-import { createSession } from "@/lib/api"
+import {createQuery, createSession, runSearch} from "@/lib/api"
 import Header from "@/components/ui/header"
+import {useNavigationDrawer} from "@/components/navigation-drawer-context";
 
 export default function Home() {
   const [sessionTitle, setSessionTitle] = useState("")
   const router = useRouter()
 
+  const { reloadSessions } = useNavigationDrawer()
+
   const handleStartSession = async () => {
-    const res = await createSession()
-    router.push(`/session/${res.sessionId}`)
+    const session = await createSession()
+    const query = await createQuery(session.sessionId, sessionTitle)
+
+    await reloadSessions() // 🔄 обновляем историю перед переходом
+
+    router.push(`/session/${session.sessionId}/query/${query.id}`)
   }
+
+
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && sessionTitle.trim()) {
@@ -24,8 +33,6 @@ export default function Home() {
   return (
       <div className="flex min-h-screen flex-col">
         <Header/>
-
-
         <main className="flex flex-1 flex-col items-center justify-center p-4 md:p-8">
           <div className="w-full max-w-2xl space-y-6 text-center">
             <h1 className="text-[24px] font-semibold text-on-surface tracking-tight">Начните исследовательскую

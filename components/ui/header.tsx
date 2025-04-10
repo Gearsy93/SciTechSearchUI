@@ -8,7 +8,7 @@ export default function Header() {
     return (
         <header
             className="sticky top-0 z-40 flex h-20 w-full items-center bg-surface-container-low/90 backdrop-blur-sm px-4 shadow-sm">
-            <MdButton variant="text" size="icon" className="md-elevation-0" onClick={openDrawer}>
+            <MdButton variant="ghost" size="icon" className="md-elevation-0" onClick={openDrawer}>
                 <Menu className="h-6 w-6"/>
                 <span className="sr-only">Open menu</span>
             </MdButton>
