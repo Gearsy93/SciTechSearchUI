@@ -1,0 +1,303 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Material Design 3 color system */
+    --primary: 267 56% 47%;
+    --primary-container: 267 56% 90%;
+    --on-primary: 0 0% 100%;
+    --on-primary-container: 267 56% 15%;
+
+    --secondary: 291 48% 40%;
+    --secondary-container: 291 48% 90%;
+    --on-secondary: 0 0% 100%;
+    --on-secondary-container: 291 48% 15%;
+
+    --tertiary: 315 40% 40%;
+    --tertiary-container: 315 40% 90%;
+    --on-tertiary: 0 0% 100%;
+    --on-tertiary-container: 315 40% 15%;
+
+    --error: 0 75% 42%;
+    --error-container: 0 75% 90%;
+    --on-error: 0 0% 100%;
+    --on-error-container: 0 75% 15%;
+
+    --background: 0 0% 100%;
+    --on-background: 0 0% 10%;
+
+    --surface: 0 0% 100%;
+    --surface-container: 0 0% 96%;
+    --surface-container-low: 0 0% 98%;
+    --surface-container-high: 0 0% 94%;
+    --surface-container-highest: 0 0% 92%;
+    --surface-variant: 267 10% 90%;
+    --on-surface: 0 0% 10%;
+    --on-surface-variant: 267 10% 30%;
+
+    --outline: 0 0% 60%;
+    --outline-variant: 0 0% 80%;
+
+    /* shadcn/ui compatibility */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --muted: 267 10% 96%;
+    --muted-foreground: 267 10% 38%;
+
+    --accent: 267 56% 94%;
+    --accent-foreground: 267 56% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 267 10% 85%;
+    --input: 267 10% 85%;
+    --ring: 267 56% 90%;
+
+    --radius: 1rem;
+  }
+
+  .dark {
+    --primary: 267 56% 80%;
+    --primary-container: 267 56% 30%;
+    --on-primary: 0 0% 10%;
+    --on-primary-container: 267 56% 90%;
+
+    --secondary: 291 48% 80%;
+    --secondary-container: 291 48% 30%;
+    --on-secondary: 0 0% 10%;
+    --on-secondary-container: 291 48% 90%;
+
+    --tertiary: 315 40% 80%;
+    --tertiary-container: 315 40% 30%;
+    --on-tertiary: 0 0% 10%;
+    --on-tertiary-container: 315 40% 90%;
+
+    --error: 0 75% 80%;
+    --error-container: 0 75% 30%;
+    --on-error: 0 0% 10%;
+    --on-error-container: 0 75% 90%;
+
+    --background: 0 0% 10%;
+    --on-background: 0 0% 90%;
+
+    --surface: 0 0% 10%;
+    --surface-container: 0 0% 12%;
+    --surface-container-low: 0 0% 14%;
+    --surface-container-high: 0 0% 16%;
+    --surface-container-highest: 0 0% 20%;
+    --surface-variant: 267 10% 20%;
+    --on-surface: 0 0% 90%;
+    --on-surface-variant: 267 10% 80%;
+
+    --outline: 0 0% 50%;
+    --outline-variant: 0 0% 30%;
+
+    /* shadcn/ui compatibility */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 90%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 90%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 90%;
+
+    --muted: 267 10% 20%;
+    --muted-foreground: 267 10% 70%;
+
+    --accent: 267 56% 20%;
+    --accent-foreground: 267 56% 90%;
+
+    --destructive: 0 84% 40%;
+    --destructive-foreground: 0 0% 90%;
+
+    --border: 267 10% 30%;
+    --input: 267 10% 30%;
+    --ring: 267 56% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Material Design 3 Elevation */
+.md-elevation-1 {
+  @apply shadow-sm;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.md-elevation-2 {
+  @apply shadow;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.md-elevation-3 {
+  @apply shadow-md;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.md-elevation-4 {
+  @apply shadow-lg;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.md-elevation-5 {
+  @apply shadow-xl;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+@layer components {
+  /* Material Design 3 Typography */
+  .md-display-large {
+    @apply text-6xl font-normal leading-tight tracking-tighter;
+  }
+
+  .md-display-medium {
+    @apply text-5xl font-normal leading-tight tracking-tighter;
+  }
+
+  .md-display-small {
+    @apply text-4xl font-normal leading-tight tracking-tighter;
+  }
+
+  .md-headline-large {
+    @apply text-3xl font-normal leading-tight;
+  }
+
+  .md-headline-medium {
+    @apply text-2xl font-normal leading-tight;
+  }
+
+  .md-headline-small {
+    @apply text-xl font-normal leading-tight;
+  }
+
+  .md-title-large {
+    @apply text-xl font-medium leading-7;
+  }
+
+  .md-title-medium {
+    @apply text-base font-medium leading-6;
+  }
+
+  .md-title-small {
+    @apply text-sm font-medium leading-5;
+  }
+
+  .md-body-large {
+    @apply text-base font-normal leading-7;
+  }
+
+  .md-body-medium {
+    @apply text-sm font-normal leading-6;
+  }
+
+  .md-body-small {
+    @apply text-xs font-normal leading-5;
+  }
+
+  .md-label-large {
+    @apply text-sm font-medium leading-5;
+  }
+
+  .md-label-medium {
+    @apply text-xs font-medium leading-4;
+  }
+
+  .md-label-small {
+    @apply text-xs font-medium leading-4;
+  }
+
+  /* Material Design 3 Input */
+  .md-input-filled {
+    @apply h-14 rounded-t-md rounded-b-none border-0 border-b-2 border-outline bg-surface px-4 py-4 focus:border-primary focus:outline-none;
+  }
+
+  /* Material Design 3 Chip */
+  .md-chip {
+    @apply inline-flex h-8 items-center rounded-full px-3 text-sm font-medium;
+  }
+
+  .md-chip-filled {
+    @apply bg-secondary-container text-on-secondary-container;
+  }
+
+  .md-chip-outlined {
+    @apply border border-outline bg-transparent text-on-surface;
+  }
+
+  .md-chip-tonal {
+    @apply bg-secondary-container/70 text-on-secondary-container;
+  }
+
+  /* Material Design 3 FAB */
+  .md-fab {
+    @apply flex h-14 w-14 items-center justify-center rounded-full bg-primary text-on-primary shadow-lg transition-all hover:shadow-xl active:shadow-md;
+  }
+
+  .md-fab-small {
+    @apply h-10 w-10;
+  }
+
+  .md-fab-large {
+    @apply h-24 w-24;
+  }
+
+  /* Material Design 3 Card */
+  .md-card-elevated {
+    @apply rounded-xl bg-surface md-elevation-2;
+  }
+
+  .md-card-filled {
+    @apply rounded-xl bg-surface;
+  }
+
+  .md-card-outlined {
+    @apply rounded-xl border border-outline bg-surface;
+  }
+}
+
+/* Animation */
+.md-page-transition {
+  animation: md-page-in 0.3s ease-out;
+}
+
+@keyframes md-page-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.md-fade-in {
+  animation: md-fade-in 0.2s ease-out;
+}
+
+@keyframes md-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
