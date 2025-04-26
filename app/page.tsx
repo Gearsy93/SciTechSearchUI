@@ -15,21 +15,14 @@ export default function Home() {
 
   const handleStartSession = async () => {
     const session = await createSession()
-    // const query = await runSearch(session.sessionId, sessionTitle)
 
     await reloadSessions()
 
+    // Сохраняем текст в localStorage
+    localStorage.setItem("search-topic", sessionTitle)
     router.push(`/session/${session.sessionId}/query/new`)
   }
-
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && sessionTitle.trim()) {
-      handleStartSession()
-    }
-  }
-
-  return (
+    return (
       <div className="flex min-h-screen flex-col">
         <Header/>
         <main className="flex flex-1 flex-col items-center justify-center p-4 md:p-8">

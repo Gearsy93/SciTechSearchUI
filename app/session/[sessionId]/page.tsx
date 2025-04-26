@@ -48,7 +48,8 @@ export default function SessionPage() {
 
   const handleSearch = async () => {
     if (!sessionId) return
-    // const query = await runSearch(sessionId, queryText)
+    // Сохраняем текст в localStorage
+    localStorage.setItem("search-topic", queryText)
     router.push(`/session/${sessionId}/query/new`)
   }
 

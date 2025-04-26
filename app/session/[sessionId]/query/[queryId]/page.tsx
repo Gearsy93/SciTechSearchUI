@@ -17,6 +17,7 @@ export default function QueryResultsPage() {
   const [query, setQuery] = useState<any>(null)
   const [results, setResults] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [loaded, setLoaded] = useState(false)
   const [statusMessage, setStatusMessage] = useState("")
 
   useEffect(() => {
@@ -36,27 +37,37 @@ export default function QueryResultsPage() {
 
   useEffect(() => {
     const load = async () => {
+      if (loaded) return // если уже загрузили, выходим
+
       const sessionId = Number(params.sessionId)
 
       if (params.queryId === "new") {
-        // Создаем новый поиск
-        const newQuery = await runSearch(sessionId, "Тема поиска") // можно заменить на реальное значение
-        router.replace(`/session/${sessionId}/query/${newQuery.id}`)
+          const topic = localStorage.getItem("search-topic")
+
+          if (!topic) return
+          else {
+              const newQuery = await runSearch(sessionId, topic)
+              router.replace(`/session/${sessionId}/query/${newQuery.id}`)
+          }
       } else {
         try {
+          console.log("Отправляется запрос на поиск")
           const queryData = await getQuery(Number(params.queryId))
           const resultData = await getResults(Number(params.queryId))
           setQuery(queryData)
           setResults(resultData.sort((a, b) => b.score - a.score))
           setIsLoading(false)
+          setLoaded(true)
         } catch (e) {
           console.error("Ошибка загрузки данных", e)
         }
       }
     }
 
-    load()
-  }, [params.queryId, params.sessionId, router])
+      if (params.queryId && params.sessionId) {
+          load()
+      }
+  }, [params.queryId, params.sessionId])
 
   if (params.queryId === "new" || isLoading) {
     // Показываем спиннер

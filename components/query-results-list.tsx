@@ -9,15 +9,6 @@ import { Check } from "lucide-react"
 import { markDocumentAsViewed, unmarkDocumentAsViewed, getResults } from "@/lib/api"
 import {SwitchWithLabel} from "@/components/ui/switch-with-label";
 
-type SearchResult = {
-    id: string
-    title: string
-    documentUrl: string
-    snippet: string
-    score: number
-    viewed: boolean
-}
-
 export default function QueryResultsList({ queryId, documents }: { queryId: number, documents: SearchResult[] }) {
     const [results, setResults] = useState(documents)
     const [hideViewed, setHideViewed] = useState(true)
@@ -69,7 +60,7 @@ export default function QueryResultsList({ queryId, documents }: { queryId: numb
                                                     handleToggleViewed(result.id, isViewed)
                                                     window.open(result.documentUrl, "_blank", "noopener,noreferrer")
                                                 }}
-                                                className="inline-flex items-center gap-1 hover:underline align-middle text-on-surface font-semibold"
+                                                className="inline-flex items-center gap-1 hover:underline align-middle text-on-surface font-semibold justify-start text-left"
                                             >
                                                 {result.title}
                                             </button>
@@ -87,11 +78,15 @@ export default function QueryResultsList({ queryId, documents }: { queryId: numb
                                     </MdChip>
                                 </div>
 
-                                <p className="md-body-small mb-3 text-muted-foreground">{result.documentUrl}</p>
+                                <p className="md-body-small mb-3 text-muted-foreground">
+                                    {result.documentUrl.length > 80
+                                        ? result.documentUrl.slice(0, 80) + "..."
+                                        : result.documentUrl}
+                                </p>
                                 <p className="md-body-medium">{result.snippet}</p>
 
                                 <div className="mt-4">
-                                    <MdButton
+                                <MdButton
                                         onClick={() => handleToggleViewed(result.id, isViewed)}
                                         className={cn(
                                             "rounded-md text-sm px-4 py-2 transition font-medium",

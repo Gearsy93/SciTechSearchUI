@@ -7,11 +7,6 @@ type SearchResult = {
     viewed: boolean
 }
 
-type QueryWithResults = {
-    id: number
-    text: string
-    results: SearchResult[]
-}
 
 type NavigationDrawerContextType = {
     openDrawer: () => void;
