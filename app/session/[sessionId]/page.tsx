@@ -1,13 +1,15 @@
 "use client"
 
-import {useState, type KeyboardEvent, useEffect} from "react"
+import { FileText } from "lucide-react" // иконка документа
+
+import {useState, useEffect} from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { ArrowLeft, Search } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 
 import { MdAppBar } from "@/components/ui/md-app-bar"
 import { MdButton } from "@/components/ui/md-button"
-import { MdCard, MdCardContent, MdCardHeader, MdCardTitle } from "@/components/ui/md-card"
+import { MdCardContent } from "@/components/ui/md-card"
 import { EmptyState } from "@/components/empty-state"
 import {getQueries, runSearch} from "@/lib/api";
 
@@ -44,16 +46,12 @@ export default function SessionPage() {
     fetchQueries()
   }, [params.sessionId])
 
-
-
   const handleSearch = async () => {
     if (!sessionId) return
-    const results = await runSearch(sessionId, queryText)
-    const latestQuery = results.length > 0 ? results[0].queryId : null
-    if (latestQuery) {
-      router.push(`/session/${sessionId}/query/${latestQuery}`)
-    }
+    // const query = await runSearch(sessionId, queryText)
+    router.push(`/session/${sessionId}/query/new`)
   }
+
 
   if (!sessionId) return null
 
@@ -62,25 +60,32 @@ export default function SessionPage() {
         <MdAppBar elevation={1} variant="center">
           <Link href="/">
             <MdButton variant="ghost" size="icon">
-              <ArrowLeft className="h-6 w-6" />
+              <ArrowLeft className="h-6 w-6"/>
               <span className="sr-only">Back</span>
             </MdButton>
           </Link>
-          <h1 className="ml-4 text-[22px] font-medium tracking-tight text-on-surface">
+          <h1 className="ml-4 md-headline-medium font-medium tracking-tight text-on-surface">
             {queries.length > 0
                 ? `${queries[0].queryText.length > 40
                     ? queries[0].queryText.slice(0, 40) + "…"
                     : queries[0].queryText}`
                 : `Сессия №${sessionId}`}
           </h1>
-
+          <div className="ml-auto">
+            <Link href={`/session/${sessionId}/viewed/all`}>
+            <MdButton variant="ghost" size="icon">
+                <FileText className="h-6 w-6"/>
+                <span className="sr-only">Просмотренные документы</span>
+              </MdButton>
+            </Link>
+          </div>
         </MdAppBar>
 
         <main className="flex flex-1 flex-col items-start relative">
           <div className="flex-1 w-full p-4 md:p-8">
             <div className="pt-6 px-4 w-full max-w-xl mx-auto">
-              <h2 className="text-xl font-semibold mb-4">История запросов</h2>
               <MdCardContent>
+                <h2 className="text-xl font-semibold mb-4">История запросов</h2>
                 {isLoading ? (
                     <div className="flex flex-1 items-center justify-center py-10">
                       <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"/>
@@ -91,8 +96,7 @@ export default function SessionPage() {
                           <li key={query.id}>
                             <Link
                                 href={`/session/${sessionId}/query/${query.id}`}
-                                className="block rounded-xl bg-surface-container-low px-4 py-4 shadow-sm hover:shadow-md transition-colors"
-                            >
+                                className="block rounded-xl bg-surface-container-low px-4 py-4 shadow-sm hover:shadow-md transition-colors">
                               <div className="md-body-large text-on-surface">{query.queryText}</div>
                               <div className="md-body-small text-muted-foreground mt-1">
                                 {new Date(query.createdAt).toLocaleString("ru-RU", {
@@ -128,7 +132,7 @@ export default function SessionPage() {
                   type="text"
                   value={queryText}
                   onChange={(e) => setQueryText(e.target.value)}
-                  placeholder="Поиск научно-технической литературы"
+                  placeholder="Цифровизация логистики"
                   className="flex-1 rounded-xl border border-outline/30 bg-surface px-4 py-4 text-lg text-on-surface placeholder:text-muted-foreground shadow-sm hover:shadow-md focus:shadow-md focus:outline-none focus:ring-0 transition"
               />
             </form>

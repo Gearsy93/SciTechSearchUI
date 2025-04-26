@@ -1,17 +1,28 @@
-const baseUrl = 'http://192.168.0.2:8080/api'
+const baseUrl =
+    typeof window !== "undefined" && window.location.hostname === "46.146.230.53"
+        ? "http://46.146.230.53:8080/api"
+        : "http://localhost:8080/api"
+
 
 export async function createSession(): Promise<{ sessionId: number; startTime: string }> {
     const res = await fetch(`${baseUrl}/session/create`, { method: "POST" })
     return res.json()
 }
 
-export async function runSearch(sessionId: number, query: string): Promise<any[]> {
+export async function runSearch(sessionId: number, queryText: string): Promise<{ id: number; queryText: string }> {
     const res = await fetch(`${baseUrl}/search`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, query })
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionId, query: queryText }),
     })
-    return res.json()
+
+    const data = await res.json()
+    return {
+        id: data.queryId,
+        queryText: queryText,
+    }
 }
 
 export async function getQueries(sessionId: number): Promise<any[]> {
@@ -43,19 +54,17 @@ export async function getQuery(queryId: number): Promise<{ id: number; queryText
     if (!res.ok) throw new Error("Failed to fetch query")
     return res.json()
 }
-
-export async function getSession(sessionId: number): Promise<{ id: number; title: string }> {
-    const res = await fetch(`${baseUrl}/session/${sessionId}`);
-    return res.json();
+export async function unmarkDocumentAsViewed(queryId: number, documentId: string) {
+    await fetch(`${baseUrl}/document/${queryId}/unviewed`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ queryId, documentId }),
+    })
 }
 
-export async function createQuery(sessionId: number, queryText: string): Promise<{ id: number; queryText: string }> {
-    const res = await fetch(`${baseUrl}/query/create`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ sessionId, queryText }),
-    })
+export async function getViewedDocuments(sessionId: number): Promise<SearchResult[]> {
+    console.log("делаю запроса")
+    const res = await fetch(`${baseUrl}/session/${sessionId}/viewed`)
+    if (!res.ok) throw new Error("Failed to fetch viewed docs")
     return res.json()
 }

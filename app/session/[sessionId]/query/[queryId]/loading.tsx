@@ -1,7 +1,8 @@
 export default function Loading() {
-  return (
-      <div className="flex min-h-screen items-center justify-center text-muted-foreground">
-        <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full" />
-      </div>
-  )
+    return (
+        <div className="flex min-h-screen items-center justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"/>
+            <div className="ml-4 text-muted-foreground">Загружаем результаты поиска...</div>
+        </div>
+    )
 }

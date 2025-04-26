@@ -1,11 +1,10 @@
 type SearchResult = {
+    documentUrl: string
     id: string
-    documentId: string
-    url: string
-    title: string
-    snippet: string
     score: number
-    viewed?: boolean
+    snippet: string
+    title: string
+    viewed: boolean
 }
 
 type QueryWithResults = {
